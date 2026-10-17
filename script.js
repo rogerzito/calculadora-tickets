@@ -257,7 +257,7 @@ function calcPower() {
 
   const box = $("powerResult");
 
-  if (power === 0 && hpLost === 0) {
+  if (power === 0 || hpLost === 0) {
     box.innerHTML = `
       <div class="power-label">Power Inimigo Estimado</div>
       <div class="power-num">—</div>
@@ -275,7 +275,7 @@ function calcPower() {
 // ---- CONVERSOR RÁPIDO ----
 function convFromTickets() {
   const t = parseFloat(elConvTickets.value);
-  if (!Number.isFinite(t) || t < 0) {
+  if (!Number.isFinite(t) || t <= 0) {
     $("convKillsOut").querySelector("strong").textContent = "—";
     return;
   }
@@ -284,7 +284,7 @@ function convFromTickets() {
 
 function convFromKills() {
   const k = parseFloat(elConvKills.value);
-  if (!Number.isFinite(k) || k < 0) {
+  if (!Number.isFinite(k) || k <= 0) {
     $("convTicketsOut").querySelector("strong").textContent = "—";
     return;
   }

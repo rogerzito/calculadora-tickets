@@ -35,7 +35,7 @@
       <div class="metrics-row">
         <div class="metric-box">
           <span class="metric-label">Tickets em Mãos</span>
-          <input id="currentTickets" type="number" min="0" value="150" placeholder="0">
+          <input id="currentTickets" type="number" min="0" placeholder="0">
         </div>
         <div class="metric-box">
           <span class="metric-label">Tickets de SF</span>
@@ -63,7 +63,7 @@
           </div>
           <div class="planner-input-wrap">
             <label for="targetKills">Meta de Kills</label>
-            <input id="targetKills" type="number" min="0" value="0" placeholder="Ex: 500">
+            <input id="targetKills" type="number" min="0" placeholder="Ex: 500">
             <div class="quick-btns">
               <button type="button" data-val="140">140</button>
               <button type="button" data-val="280">280</button>
@@ -106,13 +106,22 @@
         <p class="desc">Marco 65 → +20 tickets · Marco 120 → +20 tickets · 140 → reset.</p>
         <div class="field">
           <label for="rewardPos">Posição Atual no Ciclo</label>
-          <input id="rewardPos" type="number" min="0" max="140" value="0" placeholder="0–140">
+          <input id="rewardPos" type="number" min="0" max="140" placeholder="0">
         </div>
         <div class="cycle-track">
           <div id="cycleBar" class="cycle-bar"></div>
-          <span class="cp" style="left:46.43%">65</span>
-          <span class="cp" style="left:85.71%">120</span>
-          <span class="cp cp-end" style="left:100%">140</span>
+          <div class="checkpoint" style="left:46.43%">
+            <span class="cp-pin"></span>
+            <span class="cp-label">65 (+20)</span>
+          </div>
+          <div class="checkpoint" style="left:85.71%">
+            <span class="cp-pin"></span>
+            <span class="cp-label">120 (+20)</span>
+          </div>
+          <div class="checkpoint" style="left:100%">
+            <span class="cp-pin cp-reset"></span>
+            <span class="cp-label">140 (Reset)</span>
+          </div>
         </div>
         <div id="cycleStatus" class="status-box"></div>
       </section>
@@ -132,11 +141,11 @@
         <div class="fields-row">
           <div class="field">
             <label for="myPower">Meu Power Antes da Luta</label>
-            <input id="myPower" type="number" min="0" value="" placeholder="Ex: 500000">
+            <input id="myPower" type="number" min="0" placeholder="Ex: 500000">
           </div>
           <div class="field">
             <label for="hpLost">HP Perdido no Ataque</label>
-            <input id="hpLost" type="number" min="0" value="" placeholder="Ex: 50">
+            <input id="hpLost" type="number" min="0" placeholder="Ex: 50">
           </div>
         </div>
         <div id="powerResult" class="power-result"></div>
@@ -153,14 +162,14 @@
         <div class="fields-row">
           <div class="field">
             <label for="convTickets">Tickets</label>
-            <input id="convTickets" type="number" min="0" value="" placeholder="Ex: 150">
+            <input id="convTickets" type="number" min="0" placeholder="Ex: 150">
             <div id="convKillsOut" class="conv-out">
               <span>Kills possíveis:</span><strong>—</strong>
             </div>
           </div>
           <div class="field">
             <label for="convKills">Kills</label>
-            <input id="convKills" type="number" min="0" value="" placeholder="Ex: 100">
+            <input id="convKills" type="number" min="0" placeholder="Ex: 100">
             <div id="convTicketsOut" class="conv-out">
               <span>Tickets necessários:</span><strong>—</strong>
             </div>
