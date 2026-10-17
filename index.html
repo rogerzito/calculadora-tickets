@@ -3,129 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ticket & Kill Calculator</title>
+  <title>Planejador de Combate & Kills</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="topbar">
-    <div>
-      <span class="eyebrow">SF TOOL</span>
-      <h1>Ticket & Kill Calculator</h1>
-      <p>Calcule kills, tickets, rewards e power do inimigo.</p>
+    <div class="topbar-inner">
+      <div>
+        <span class="eyebrow">SISTEMA TÁTICO OPERACIONAL</span>
+        <h1>Planejador de Combate &amp; Kills</h1>
+      </div>
+      <div class="topbar-pills">
+        <span class="pill">1 Kill = 1.5 Tickets</span>
+        <span class="pill">Ciclo: 140 Kills</span>
+      </div>
     </div>
   </header>
 
   <main class="container">
-    <section class="grid">
-      <article class="card">
-        <div class="card-head">
-          <div>
-            <span class="tag">01</span>
-            <h2>Tickets ↔ Kills</h2>
-          </div>
-          <span class="formula">1 kill = 1,5 tickets</span>
-        </div>
 
-        <div class="two-columns">
-          <div class="field">
-            <label for="currentTickets">Tickets atuais</label>
-            <input id="currentTickets" type="number" min="0" step="0.01" placeholder="Ex.: 750">
-            <button id="calcKills" class="primary">Calcular kills</button>
-            <div id="killsResult" class="result"></div>
-          </div>
-
-          <div class="field">
-            <label for="targetKills">Kills desejadas</label>
-            <input id="targetKills" type="number" min="0" step="1" placeholder="Ex.: 500">
-            <button id="calcTickets" class="primary">Calcular tickets</button>
-            <div id="ticketsResult" class="result"></div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-head">
-          <div>
-            <span class="tag">02</span>
-            <h2>SF — Bots</h2>
-          </div>
-          <span class="muted">Dados dos bots cadastrados</span>
-        </div>
-
-        <div class="field">
-          <label for="botSelect">Selecione o bot</label>
-          <select id="botSelect"></select>
-        </div>
-
-        <div id="botInfo" class="bot-info"></div>
-      </article>
-    </section>
-
-    <section class="grid">
-      <article class="card">
-        <div class="card-head">
-          <div>
-            <span class="tag">03</span>
-            <h2>Reward de kills</h2>
-          </div>
-          <span class="formula">Ciclo: 0/140</span>
-        </div>
-
-        <p class="description">
-          Informe sua posição atual no ciclo. Ao passar por 65, recebe +20 tickets;
-          ao passar por 120, recebe mais +20. Em 140 o ciclo reinicia.
-        </p>
-
-        <div class="field">
-          <label for="rewardPosition">Posição atual</label>
-          <input id="rewardPosition" type="number" min="0" max="140" step="1" placeholder="Ex.: 40">
-          <button id="calcReward" class="primary">Calcular próximo reward</button>
-        </div>
-
-        <div id="rewardResult" class="reward-box"></div>
-      </article>
-
-      <article class="card">
-        <div class="card-head">
-          <div>
-            <span class="tag">04</span>
-            <h2>Power do inimigo</h2>
-          </div>
-          <span class="formula">HP × Power ÷ 51</span>
-        </div>
-
-        <div class="two-columns">
-          <div class="field">
-            <label for="myHp">Meu HP antes da luta</label>
-            <input id="myHp" type="number" min="0" step="1" placeholder="Ex.: 1000000">
-          </div>
-
-          <div class="field">
-            <label for="myPower">Meu power antes da luta</label>
-            <input id="myPower" type="number" min="0" step="1" placeholder="Ex.: 500000">
-          </div>
-        </div>
-
-        <button id="calcPower" class="primary">Estimar power inimigo</button>
-        <div id="powerResult" class="result"></div>
-        <p class="hint">Resultado aproximado conforme a fórmula informada.</p>
-      </article>
-    </section>
-
-    <section class="card">
+    <!-- ============ PAINEL CONSOLIDADO ============ -->
+    <section class="card card-highlight">
       <div class="card-head">
         <div>
-          <span class="tag">05</span>
-          <h2>Resumo do bot selecionado</h2>
+          <span class="tag">PAINEL ESTRATÉGICO</span>
+          <h2>Painel Consolidado de Recursos</h2>
+        </div>
+        <span class="badge-live"><span class="dot-pulse"></span>TEMPO REAL</span>
+      </div>
+
+      <div class="metrics-row">
+        <div class="metric-box">
+          <span class="metric-label">Tickets em Mãos</span>
+          <input id="currentTickets" type="number" min="0" value="150" placeholder="0">
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">Tickets de SF</span>
+          <span id="metricSfTickets" class="metric-val accent">+0</span>
+          <span id="metricSfSub" class="metric-sub">Nenhum SF selecionado</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">Bônus de Ciclo</span>
+          <span id="metricBonusTickets" class="metric-val green">+0</span>
+          <span id="metricBonusSub" class="metric-sub">0 marcos</span>
+        </div>
+        <div class="metric-box box-gold">
+          <span class="metric-label">Saldo Total</span>
+          <span id="metricTotalTickets" class="metric-val gold">0</span>
+          <span id="metricTotalKills" class="metric-sub">= 0 kills possíveis</span>
         </div>
       </div>
-      <div id="summary" class="summary"></div>
+
+      <!-- PLANEJADOR REVERSO -->
+      <div class="planner">
+        <div class="planner-head">
+          <div>
+            <h3>Planejador Reverso — Meta de Kills</h3>
+            <p class="planner-desc">Defina uma meta de kills para calcular o custo líquido.</p>
+          </div>
+          <div class="planner-input-wrap">
+            <label for="targetKills">Meta de Kills</label>
+            <input id="targetKills" type="number" min="0" value="0" placeholder="Ex: 500">
+            <div class="quick-btns">
+              <button type="button" data-val="140">140</button>
+              <button type="button" data-val="280">280</button>
+              <button type="button" data-val="500">500</button>
+              <button type="button" data-val="1000">1000</button>
+            </div>
+          </div>
+        </div>
+        <div id="plannerOutput"></div>
+      </div>
     </section>
+
+    <!-- ============ GRID 2 COLUNAS ============ -->
+    <div class="grid2">
+
+      <!-- SF -->
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <span class="tag">MÓDULO 02</span>
+            <h2>Operações de SF / Assalto de Gangue</h2>
+          </div>
+        </div>
+        <div class="field">
+          <label for="botSelect">Alvo do Assalto</label>
+          <select id="botSelect"></select>
+        </div>
+        <div id="sfResult" class="sf-result"></div>
+      </section>
+
+      <!-- CICLO DE RECOMPENSAS -->
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <span class="tag">MÓDULO 03</span>
+            <h2>Progressão de Recompensas de Kills</h2>
+          </div>
+          <span id="cycleBadge" class="pill">[0 / 140]</span>
+        </div>
+        <p class="desc">Marco 65 → +20 tickets · Marco 120 → +20 tickets · 140 → reset.</p>
+        <div class="field">
+          <label for="rewardPos">Posição Atual no Ciclo</label>
+          <input id="rewardPos" type="number" min="0" max="140" value="0" placeholder="0–140">
+        </div>
+        <div class="cycle-track">
+          <div id="cycleBar" class="cycle-bar"></div>
+          <span class="cp" style="left:46.43%">65</span>
+          <span class="cp" style="left:85.71%">120</span>
+          <span class="cp cp-end" style="left:100%">140</span>
+        </div>
+        <div id="cycleStatus" class="status-box"></div>
+      </section>
+    </div>
+
+    <div class="grid2">
+
+      <!-- POWER SCANNER -->
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <span class="tag">MÓDULO 04</span>
+            <h2>Estimador de Poder do Alvo (Power Scanner)</h2>
+          </div>
+        </div>
+        <p class="desc">Fórmula: (HP Perdido × Meu Power) ÷ 51</p>
+        <div class="fields-row">
+          <div class="field">
+            <label for="myPower">Meu Power Antes da Luta</label>
+            <input id="myPower" type="number" min="0" value="" placeholder="Ex: 500000">
+          </div>
+          <div class="field">
+            <label for="hpLost">HP Perdido no Ataque</label>
+            <input id="hpLost" type="number" min="0" value="" placeholder="Ex: 50">
+          </div>
+        </div>
+        <div id="powerResult" class="power-result"></div>
+      </section>
+
+      <!-- CONVERSOR RÁPIDO -->
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <span class="tag">MÓDULO 05</span>
+            <h2>Conversor Rápido Tickets ↔ Kills</h2>
+          </div>
+        </div>
+        <div class="fields-row">
+          <div class="field">
+            <label for="convTickets">Tickets</label>
+            <input id="convTickets" type="number" min="0" value="" placeholder="Ex: 150">
+            <div id="convKillsOut" class="conv-out">
+              <span>Kills possíveis:</span><strong>—</strong>
+            </div>
+          </div>
+          <div class="field">
+            <label for="convKills">Kills</label>
+            <input id="convKills" type="number" min="0" value="" placeholder="Ex: 100">
+            <div id="convTicketsOut" class="conv-out">
+              <span>Tickets necessários:</span><strong>—</strong>
+            </div>
+          </div>
+        </div>
+        <div class="ref-table">
+          <span class="ref-title">Referência Rápida</span>
+          <div class="ref-grid" id="refGrid"></div>
+        </div>
+      </section>
+    </div>
+
   </main>
 
   <footer>
-    <span>Ticket & Kill Calculator</span>
-    <span>Dados processados localmente no navegador.</span>
+    <span>Planejador de Combate &amp; Kills — v2.0</span>
+    <span>Cálculos locais em tempo real.</span>
   </footer>
 
   <script src="script.js"></script>

@@ -1,49 +1,83 @@
-# Ticket & Kill Calculator
+# Planejador de Combate & Kills — v2.0
 
-Calculadora frontend em HTML, CSS e JavaScript puro.
+Utilitário tático para gestão de tickets, assaltos de gangue (SF), progressão de recompensas e estimativa de poder inimigo. HTML, CSS e JavaScript puro com cálculos 100% locais e reatividade em tempo real.
+
+---
 
 ## Fórmulas
 
-### Tickets para Kills
+### Tickets ↔ Kills
 
-`Tickets × 1,5 = Kills`
+Cada **1 Kill custa 1.5 Tickets**.
 
-Exemplo:
+| Operação | Fórmula | Exemplo |
+| :--- | :--- | :--- |
+| Kills possíveis com meus tickets | `Kills = Tickets / 1.5` | 150 tickets / 1.5 = **100 kills** |
+| Tickets necessários para X kills | `Tickets = Kills * 1.5` | 100 kills * 1.5 = **150 tickets** |
 
-`300 tickets × 1,5 = 450 kills`
+### Power Inimigo (Power Scanner)
 
-### Kills para Tickets
+```
+Power Inimigo = (HP Perdido * Meu Power) / 51
+```
 
-`Kills ÷ 1,5 = Tickets`
+- **HP Perdido**: valor absoluto de HP perdido no ataque (ex: 50), **não é porcentagem**.
+- **Meu Power**: power do jogador antes da luta (ex: 500000).
+- Exemplo: `(50 * 500000) / 51 = 490,196`.
 
-Exemplo:
+---
 
-`300 kills ÷ 1,5 = 200 tickets`
+## Ciclo de Recompensas de Kills
 
-### Power do inimigo
+O ciclo possui 140 posições e reinicia automaticamente ao completar:
 
-`Meu HP × Meu Power ÷ 51 = Power aproximado do inimigo`
+| Marco | Bônus |
+| :--- | :--- |
+| Posição 65 / 140 | +20 tickets |
+| Posição 120 / 140 | +20 tickets |
+| Posição 140 / 140 | Ciclo reinicia em 0 |
 
-## Rewards
+Total possível por ciclo completo: **+40 tickets de bônus**.
 
-O ciclo informado é:
+---
 
-- 0/140
-- posição 65 → +20 tickets
-- posição 120 → +20 tickets
-- posição 140 → reinicia o ciclo em 0/140
+## Assalto de Gangue (SF)
 
-## Bots
+O SF acontece **1 vez a cada 12 horas reais** — não acumula. O seletor permite escolher o alvo ou "Nenhum" caso não vá fazer SF no momento.
 
-A lista de bots fica no começo de `script.js`, no array `BOTS`.
+| Alvo | Tickets | Kills Equivalentes |
+| :--- | :--- | :--- |
+| Johnny | 10 | 6.7 kills |
+| Max's Crew | 10 | 6.7 kills |
+| Andrew the Butcher's Crew | 25 | 16.7 kills |
+| Lobster Girl | 25 | 16.7 kills |
+| Prime | 25 | 16.7 kills |
+| Milos the Cutter | 25 | 16.7 kills |
+| Laski | 25 | 16.7 kills |
+| Giovanni | 35 | 23.3 kills |
 
-Cada bot possui:
+---
 
-- name
-- power
-- trusted
-- tickets
+## Painel Consolidado & Planejador Reverso
 
-A equivalência de kills do reward do bot usa a mesma regra principal:
+O painel estratégico integra em tempo real:
 
-`tickets × 1,5 = kills`
+1. **Tickets em Mãos** — estoque atual informado pelo jogador.
+2. **Tickets de SF** — tickets do bot selecionado (único, sem acumular).
+3. **Bônus de Ciclo** — marcos de 65 e 120 atingidos no trajeto projetado.
+4. **Saldo Total** = Tickets em Mãos + Tickets de SF + Bônus de Ciclo.
+5. **Kills Possíveis** = Saldo Total / 1.5.
+
+### Planejador Reverso (Meta de Kills)
+
+Ao definir uma meta de kills:
+
+- **Custo bruto** = Meta * 1.5 tickets.
+- O sistema abate automaticamente tickets em mãos, SF e bônus de ciclo.
+- Exibe **tickets excedentes** ou **tickets faltantes** conforme o resultado.
+
+---
+
+## Como Usar
+
+Abra `index.html` em qualquer navegador moderno. Sem dependências externas.
